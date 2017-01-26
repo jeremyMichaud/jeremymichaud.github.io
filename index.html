@@ -39,6 +39,8 @@
               .then(characteristic => {
                 // Writing 1 is the signal to reset energy expended.
                 porte = characteristic;
+				document.getElementById("button").style.display = "none";
+				document.getElementById("open").style.display = "block";
               })
               .catch(error => { alert(error); });
             }
@@ -67,7 +69,7 @@
         </style>
     </head>
     <body>
-        <button class="button" onCLick="onButtonClick()">Connect</button>
-        <button class="button" onCLick="onButtonClick2()">Open</button>
+        <button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
+        <button id="open" style="display: none;" class="button" onCLick="onButtonClick2()">Open</button>
     </body>
 </html>
