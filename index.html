@@ -23,6 +23,8 @@
         <meta name="theme-color" content="#4caf50">
         
         <script>
+			var porte = null;
+			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
             function onButtonClick() {
               navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}] })
               .then(device => {
@@ -36,11 +38,15 @@
               .then(service => service.getCharacteristic('0000d004-1212-efde-1523-785fef13d123'))
               .then(characteristic => {
                 // Writing 1 is the signal to reset energy expended.
-                var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
-                return characteristic.writeValue(resetEnergyExpended);
+                porte = characteristic;
               })
               .catch(error => { alert(error); });
             }
+			function onButtonClick2() {
+				if(characteristic){
+					return characteristic.writeValue(resetEnergyExpended);
+				}
+			}
         </script>
         <style>
             .button {
@@ -62,6 +68,7 @@
         </style>
     </head>
     <body>
-        <button class="button" onCLick="onButtonClick()">click</button>
+        <button class="button" onCLick="onButtonClick()">Connect</button>
+        <button class="button" onCLick="onButtonClick2()">Open</button>
     </body>
 </html>
