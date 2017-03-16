@@ -29,7 +29,7 @@
 			  var name = "";
 			  if(document.getElementById("user").value == "utilisateur" && document.getElementById("password").value == "pass"){
 				name = "Entree";
-			  } else if(document.getElementById("user").value == "admin" && document.getElementById("password").value == "pass"){
+			  } else if(document.getElementById("user").value.toLowerCase() == "admin" && document.getElementById("password").value == "1234"){
 				name = "Chambre";
 			  } else {
 				alert("Wrong username or password");
