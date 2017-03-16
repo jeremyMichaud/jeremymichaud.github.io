@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <title>Beacon</title>
+        <!-- Origin Trial Token, feature = Web Bluetooth, origin = https://beacon-altamanth.c9users.io, expires = 2016-12-25 -->
+        
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon-194x194.png" sizes="194x194">
+        <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#00aba9">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+        <meta name="theme-color" content="#4caf50">
+        
+        <script>
+			var porte = null;
+			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
+            function onButtonClick() {
+			  var name = "";
+			  if(document.getElementById("user").value == "utilisateur" && document.getElementById("password").value == "pass"){
+				name = "Entree";
+			  } else if(document.getElementById("admin").value == "utilisateur" && document.getElementById("password").value == "pass"){
+				name = "Chambre";
+			  } else {
+				alert("Wrong username or password");
+				return;
+			  }
+              navigator.bluetooth.requestDevice({ filters: [{ name: name, services: ['0000abcd-1212-efde-1523-785fef13d123']}] })
+              .then(device => {
+                // Human-readable name of the device.
+                console.log(device.name);
+              
+                // Attempts to connect to remote GATT Server.
+                return device.gatt.connect();
+              })
+              .then(server => server.getPrimaryService('0000abcd-1212-efde-1523-785fef13d123'))
+              .then(service => service.getCharacteristic('0000d004-1212-efde-1523-785fef13d123'))
+              .then(characteristic => {
+                // Writing 1 is the signal to reset energy expended.
+                porte = characteristic;
+				document.getElementById("connect").style= "display: none;";
+				document.getElementById("user-form").style= "display: none;";
+				document.getElementById("open").style = "display: block;";
+              })
+              .catch(error => { alert(error); });
+            }
+			function onButtonClick2() {
+				if(porte){
+					return porte.writeValue(resetEnergyExpended);
+				}
+			}
+        </script>
+        <style>
+            .button {
+                background-color: #4CAF50; /* Green */
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 60px;
+                cursor: pointer;
+				position: absolute;
+                height: 40%;
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 30%;
+            }
+        </style>
+    </head>
+    <body>
+		<div id="user-form">
+			<input type="text" value="utilisateur" id="user" />
+			<input type="password" value="pass" id="password" />
+		</div>
+		<button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
+        <button id="open" style="display: none;" class="button" onCLick="onButtonClick2()">Open</button>
+    </body>
+</html>
