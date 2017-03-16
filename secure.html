@@ -27,9 +27,9 @@
 			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
             function onButtonClick() {
 			  var name = "";
-			  if(document.getElementById("user").value.toLowerCase() == "utilisateur" && document.getElementById("password").value == "pass"){
+			  if(document.getElementById("user").value.toLowerCase() == "util" && document.getElementById("password").value == "pass"){
 				name = "Entree";
-			  } else if(document.getElementById("user").value.toLowerCase() == "admin" && document.getElementById("password").value == "1234"){
+			  } else if(document.getElementById("user").value.toLowerCase() == "admin" && document.getElementById("password").value == "pass"){
 				name = "Chambre";
 			  } else {
 				alert("Wrong username or password");
@@ -100,7 +100,7 @@
     </head>
     <body>
 		<div id="user-form" class="userform">
-			<input type="text" value="utilisateur" id="user" /> <br />
+			<input type="text" value="admin" id="user" /> <br />
 			<input type="password" value="pass" id="password" />
 		</div>
 		<button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
