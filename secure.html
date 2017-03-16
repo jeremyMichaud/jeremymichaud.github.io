@@ -77,11 +77,31 @@
                 margin-left: 5%;
                 margin-top: 30%;
             }
+            .userform {
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 60px;
+                cursor: pointer;
+				position: absolute;
+                height: 40%;
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 0%;
+            }
+			input{
+				width: 100%;
+				height: 20%;
+                font-size: 60px;
+				margin-bottom: 20px;
+			}
         </style>
     </head>
     <body>
-		<div id="user-form">
-			<input type="text" value="utilisateur" id="user" />
+		<div id="user-form" class="userform">
+			<input type="text" value="utilisateur" id="user" /> <br />
 			<input type="password" value="pass" id="password" />
 		</div>
 		<button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
