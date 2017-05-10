@@ -44,13 +44,14 @@
                                                 handleCharacteristicValueChanged);
                 alert('Notifications have been started.');
 				document.getElementById("connect").style= "display: none;";
-				document.getElementById("user-form").style= "display: none;";
+				document.getElementById("oldpassword-form").style= "display: none;";
+				document.getElementById("password-form").style = "display: block;";
 				document.getElementById("open").style = "display: block;";
               })
               .catch(error => { alert(error); });
             }
 			function onButtonClick2() {
-                str = document.getElementById("password").value;
+                str = document.getElementById("oldpassword").value;
                 var buf = new ArrayBuffer(str.length); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0, strLen=str.length; i<strLen; i++) {
@@ -62,9 +63,10 @@
 			}
             function handleCharacteristicValueChanged(event) {
                 var value = event.target.value;
-                alert('Received ' + value.getUint8(0));
                 if(value.getUint8(0) == 0){
                     alert('Password set successfully');
+                } else {
+                    alert('Error during the password writing');
                 }
                 // TODO: Parse Heart Rate Measurement value.
                 // See https://github.com/WebBluetoothCG/demos/blob/gh-pages/heart-rate-sensor/heartRateSensor.js
@@ -109,8 +111,12 @@
         </style>
     </head>
     <body>
-		<div id="user-form" class="userform">
-			<input type="text" value="admin" id="user" /> <br />
+		<div id="oldpassword-form" class="userform">
+			Ancien mot de passe<br />
+			<input type="password" value="pass" id="oldpassword" />
+		</div>
+		<div id="password-form" style="display: none;" class="userform">
+			Nouveau mot de passe<br />
 			<input type="password" value="pass" id="password" />
 		</div>
 		<button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
