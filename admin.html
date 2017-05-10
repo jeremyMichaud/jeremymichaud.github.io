@@ -51,7 +51,7 @@
               .catch(error => { alert(error); });
             }
 			function onButtonClick2() {
-                str = document.getElementById("oldpassword").value;
+                str = document.getElementById("password").value;
                 var buf = new ArrayBuffer(str.length); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0, strLen=str.length; i<strLen; i++) {
@@ -91,7 +91,6 @@
             }
             .userform {
                 border: none;
-                color: white;
                 text-align: center;
                 text-decoration: none;
                 display: inline-block;
@@ -104,6 +103,7 @@
                 margin-top: 0%;
             }
 			input{
+                color: white;
 				width: 80%;
                 font-size: 80px;
 				margin-bottom: 20px;
