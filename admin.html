@@ -62,7 +62,10 @@
 			}
             function handleCharacteristicValueChanged(event) {
                 var value = event.target.value;
-                alert('Received ' + value);
+                alert('Received ' + value.getUint8(0));
+                if(value.getUint8(0) == 0){
+                    alert('Password set successfully');
+                }
                 // TODO: Parse Heart Rate Measurement value.
                 // See https://github.com/WebBluetoothCG/demos/blob/gh-pages/heart-rate-sensor/heartRateSensor.js
             }
