@@ -26,7 +26,7 @@
 			var porte = null;
 			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
             function onButtonClick() {
-              navigator.bluetooth.requestDevice({ filters: [{ name: services: ['0000abcd-1212-efde-1523-785fef13d123']}] })
+              navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}] })
               .then(device => {
                 // Human-readable name of the device.
                 console.log(device.name);
