@@ -24,6 +24,7 @@
         
         <script>
 			var porte = null;
+            var message = "Login";
 			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
             function onButtonClick() {
               navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}], optionalServices: ['0000aaaa-1212-efde-1523-785fef13d123'] })
@@ -42,11 +43,14 @@
                 porte = characteristic;
                 characteristic.addEventListener('characteristicvaluechanged',
                                                 handleCharacteristicValueChanged);
-                alert('Notifications have been started.');
-				document.getElementById("connect").style= "display: none;";
-				document.getElementById("oldpassword-form").style= "display: none;";
-				document.getElementById("password-form").style = "display: block;";
-				document.getElementById("open").style = "display: block;";
+                str = document.getElementById("oldpassword").value;
+                var buf = new ArrayBuffer(str.length); // 1 byte for each char
+                var bufView = new Uint8Array(buf);
+                for (var i=0, strLen=str.length; i<strLen; i++) {
+                    bufView[i] = str.charCodeAt(i);
+                }
+                porte.writeValue(bufView);
+
               })
               .catch(error => { alert(error); });
             }
@@ -64,10 +68,15 @@
             function handleCharacteristicValueChanged(event) {
                 var value = event.target.value;
                 if(value.getUint8(0) == 0){
-                    alert('Password set successfully');
+                    alert(message + ' success');
+                    message = "Change password";
                 } else {
                     alert('Error during the password writing');
                 }
+                document.getElementById("connect").style= "display: none;";
+				document.getElementById("oldpassword-form").style= "display: none;";
+				document.getElementById("password-form").style = "display: block;";
+				document.getElementById("open").style = "display: block;";
                 // TODO: Parse Heart Rate Measurement value.
                 // See https://github.com/WebBluetoothCG/demos/blob/gh-pages/heart-rate-sensor/heartRateSensor.js
             }
