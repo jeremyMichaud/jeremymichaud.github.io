@@ -39,6 +39,8 @@
               .then(characteristic => {
                 // Writing 1 is the signal to reset energy expended.
                 porte = characteristic;
+                characteristic.addEventListener('characteristicvaluechanged',
+                                                handleBatteryLevelChanged);
 				document.getElementById("connect").style= "display: none;";
 				document.getElementById("user-form").style= "display: none;";
 				document.getElementById("open").style = "display: block;";
@@ -56,6 +58,10 @@
 					porte.writeValue(bufView);
 				}
 			}
+            function handleBatteryLevelChanged(event) {
+            let batteryLevel = event.target.value.getUint8(0);
+            console.log('Value is ' + batteryLevel);
+        }
         </script>
         <style>
             .button {
