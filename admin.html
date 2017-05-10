@@ -36,11 +36,13 @@
               })
               .then(server => server.getPrimaryService('0000aaaa-1212-efde-1523-785fef13d123'))
               .then(service => service.getCharacteristic('0000adde-1212-efde-1523-785fef13d123'))
+              .then(characteristic => characteristic.startNotifications())
               .then(characteristic => {
                 // Writing 1 is the signal to reset energy expended.
                 porte = characteristic;
                 characteristic.addEventListener('characteristicvaluechanged',
-                                                handleBatteryLevelChanged);
+                                                handleCharacteristicValueChanged);
+                alert('Notifications have been started.');
 				document.getElementById("connect").style= "display: none;";
 				document.getElementById("user-form").style= "display: none;";
 				document.getElementById("open").style = "display: block;";
@@ -58,10 +60,12 @@
 					porte.writeValue(bufView);
 				}
 			}
-            function handleBatteryLevelChanged(event) {
-            let batteryLevel = event.target.value.getUint8(0);
-            alert('Value is ' + batteryLevel);
-        }
+            function handleCharacteristicValueChanged(event) {
+                var value = event.target.value;
+                console.log('Received ' + value);
+                // TODO: Parse Heart Rate Measurement value.
+                // See https://github.com/WebBluetoothCG/demos/blob/gh-pages/heart-rate-sensor/heartRateSensor.js
+            }
         </script>
         <style>
             .button {
