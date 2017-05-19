@@ -24,7 +24,7 @@
         
         <script>
 			var porte = null;
-			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
+			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XEF]);
             function onButtonClick() {
               navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}] })
               .then(device => {
