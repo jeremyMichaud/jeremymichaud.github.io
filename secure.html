@@ -24,7 +24,6 @@
         
         <script>
 			var porte = null;
-			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
             function onButtonClick() {
               navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}], optionalServices: ['0000aaaa-1212-efde-1523-785fef13d123'] })
               .then(device => {
@@ -36,25 +35,23 @@
               })
               .then(server => server.getPrimaryService('0000abcd-1212-efde-1523-785fef13d123'))
               .then(service => service.getCharacteristic('0000d004-1212-efde-1523-785fef13d123'))
-              .then(characteristic => {
+              .then(porte => {
                 // Writing 1 is the signal to reset energy expended.
-                porte = characteristic;
-				document.getElementById("connect").style= "display: none;";
-				document.getElementById("user-form").style= "display: none;";
-				document.getElementById("open").style = "display: block;";
-              })
-              .catch(error => { alert(error); });
-            }
-			function onButtonClick2() {
                 str = document.getElementById("password").value;
                 var buf = new ArrayBuffer(str.length); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0, strLen=str.length; i<strLen; i++) {
                     bufView[i] = str.charCodeAt(i);
                 }
-				if(porte){
-					return porte.writeValue(bufView);
-				}
+				return porte.writeValue(bufView);
+              })
+              .then(error => {
+                window.close();
+              })
+              .catch(error => { alert(error); });
+            }
+			function onButtonClick2() {
+                
 			}
         </script>
         <style>
@@ -100,7 +97,6 @@
 			<input type="text" value="admin" id="user" /> <br />
 			<input type="password" value="pass" id="password" />
 		</div>
-		<button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
-        <button id="open" style="display: none;" class="button" onCLick="onButtonClick2()">Open</button>
+		<button id="connect" class="button" onCLick="onButtonClick()">Open</button>
     </body>
 </html>
