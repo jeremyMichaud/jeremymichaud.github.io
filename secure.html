@@ -25,7 +25,7 @@
         <script>
 			var porte = null;
             function onButtonClick() {
-              navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}], optionalServices: ['0000aaaa-1212-efde-1523-785fef13d123'] })
+              navigator.bluetooth.requestDevice({ filters: [{ services: ['7BAB0100-55D4-48E6-A6C8-B0EDFEB42B05']}], optionalServices: ['0000aaaa-1212-efde-1523-785fef13d123'] })
               .then(device => {
                 // Human-readable name of the device.
                 console.log(device.name);
@@ -33,8 +33,8 @@
                 // Attempts to connect to remote GATT Server.
                 return device.gatt.connect();
               })
-              .then(server => server.getPrimaryService('0000abcd-1212-efde-1523-785fef13d123'))
-              .then(service => service.getCharacteristic('0000d004-1212-efde-1523-785fef13d123'))
+              .then(server => server.getPrimaryService('7BAB0100-55D4-48E6-A6C8-B0EDFEB42B05'))
+              .then(service => service.getCharacteristic('7BAB0101-55D4-48E6-A6C8-B0EDFEB42B05'))
               .then(porte => {
                 // Writing 1 is the signal to reset energy expended.
                 str = document.getElementById("password").value;
