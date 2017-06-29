@@ -27,7 +27,7 @@
             var message = "Login";
 			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
             function onButtonClick() {
-              navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}] })
+              navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}], optionalServices: ['7bab0200-55d4-48e6-a6c8-b0edfeb42b05'] })
               .then(device => {
                 // Human-readable name of the device.
                 console.log(device.name);
