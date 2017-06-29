@@ -46,7 +46,10 @@
 				return porte.writeValue(bufView);
               })
               .then(error => {
-                window.close();
+                setTimeout(function() {
+                    window.close();
+                }, 5000);
+                
               })
               .catch(error => { alert(error); });
             }
