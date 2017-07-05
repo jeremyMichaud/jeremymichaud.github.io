@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <title>Admin</title>
+        <!-- Origin Trial Token, feature = Web Bluetooth, origin = https://beacon-altamanth.c9users.io, expires = 2016-12-25 -->
+        
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon-194x194.png" sizes="194x194">
+        <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#00aba9">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+        <meta name="theme-color" content="#4caf50">
+        
+        <script>
+			var porte = null;
+            var message = "Login";
+			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
+            function onButtonClick() {
+              navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}], optionalServices: ['7bab0200-55d4-48e6-a6c8-b0edfeb42b05'] })
+              .then(device => {
+                // Human-readable name of the device.
+                console.log(device.name);
+              
+                // Attempts to connect to remote GATT Server.
+                return device.gatt.connect();
+              })
+              .then(server => server.getPrimaryService('7bab0200-55d4-48e6-a6c8-b0edfeb42b05'))
+              .then(service => service.getCharacteristic('7bab0201-55d4-48e6-a6c8-b0edfeb42b05'))
+              .then(characteristic => characteristic.startNotifications())
+              .then(characteristic => {
+                // Writing 1 is the signal to reset energy expended.
+                porte = characteristic;
+                characteristic.addEventListener('characteristicvaluechanged',
+                                                handleCharacteristicValueChanged);
+                str = document.getElementById("oldpassword").value;
+                var buf = new ArrayBuffer(str.length); // 1 byte for each char
+                var bufView = new Uint8Array(buf);
+                for (var i=0, strLen=str.length; i<strLen; i++) {
+                    bufView[i] = str.charCodeAt(i);
+                }
+                porte.writeValue(bufView);
+
+              })
+              .catch(error => { alert(error); });
+            }
+            function handleCharacteristicValueChanged(event) {
+                var value = event.target.value;
+                if(value.getUint8(0) == 0){
+                    alert('Login success');
+                    alert('Timestamp : ' + Math.floor(Date.now() / 1000));
+                } else {
+                    alert('Error wrong password');
+                }
+                // TODO: Parse Heart Rate Measurement value.
+                // See https://github.com/WebBluetoothCG/demos/blob/gh-pages/heart-rate-sensor/heartRateSensor.js
+            }
+        </script>
+        <style>
+            .button {
+                background-color: #4CAF50; /* Green */
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 60px;
+                cursor: pointer;
+				position: absolute;
+                height: 40%;
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 30%;
+            }
+            .userform {
+                border: none;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 60px;
+                cursor: pointer;
+				position: absolute;
+                height: 40%;
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 0%;
+            }
+			input{
+				width: 80%;
+                font-size: 80px;
+				margin-bottom: 20px;
+			}
+        </style>
+    </head>
+    <body>
+		<div id="oldpassword-form" class="userform">
+			Ancien mot de passe<br />
+			<input type="password" value="pass" id="oldpassword" />
+		</div>
+		<button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
+    </body>
+</html>
