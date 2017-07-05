@@ -43,7 +43,6 @@
               .then(characteristic => characteristic.startNotifications())
               .then(characteristic => {
                 // Writing 1 is the signal to reset energy expended.
-                porte = characteristic;
                 characteristic.addEventListener('characteristicvaluechanged',
                                                 handleCharacteristicValueChanged);
                 str = document.getElementById("oldpassword").value;
@@ -62,6 +61,17 @@
                 if(value.getUint8(0) == 0){
                     alert('Login success');
                     alert('Timestamp : ' + Math.floor(Date.now() / 1000));
+                    service.getCharacteristic('7bab0203-55d4-48e6-a6c8-b0edfeb42b05')
+                      .then(characteristic => {
+                        var buf = new ArrayBuffer(4); // 1 byte for each char
+                        var bufView = new Uint8Array(buf);
+                        for (var i=0; i < 4; i++) {
+                            bufView[i] = 0;
+                        }
+                        characteristic.writeValue(bufView);
+
+                      })
+                    .catch(error => { alert(error); });
                 } else {
                     alert('Error wrong password');
                 }
