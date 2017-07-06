@@ -31,7 +31,7 @@
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
             function onButtonClick() {
                 alert("aes_doned");
-                AES_INIT();
+                AES_Init();
                 alert("aes_donee");
               navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}] })
               .then(device => {
