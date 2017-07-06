@@ -23,15 +23,6 @@
         <meta name="theme-color" content="#4caf50">
         <script src="http://point-at-infinity.org/jsaes/jsaes.js"></script>
         <script>
-            key = [ 0x92, 0x77, 0x14, 0xAB, 0x73, 0x8C, 0xB1, 0xD4, 0x75,
-                0x08, 0x84, 0x6F, 0x30, 0x4F, 0xDE, 0xB1 ];
-            AES_Init();
-            value = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-            AES_ExpandKey(key);
-            AES_Decrypt(value, key);
-
-            AES_Done();
             
 			var porte = null;
             function onButtonClick() {
@@ -46,6 +37,16 @@
               .then(server => server.getPrimaryService('7bab0100-55d4-48e6-a6c8-b0edfeb42b05'))
               .then(service => service.getCharacteristic('7bab0101-55d4-48e6-a6c8-b0edfeb42b05'))
               .then(porte => {
+                key = [ 0x92, 0x77, 0x14, 0xAB, 0x73, 0x8C, 0xB1, 0xD4, 0x75,
+                    0x08, 0x84, 0x6F, 0x30, 0x4F, 0xDE, 0xB1 ];
+                AES_Init();
+                value = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+                AES_ExpandKey(key);
+                AES_Decrypt(value, key);
+
+                AES_Done();
+                alert("aes_done");
                 var buf = new ArrayBuffer(16); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0; i<16; i++) {
