@@ -68,7 +68,11 @@
                             bufView[i] = (current_time >> i * 8) & 0xff;
                         }
                         characteristic.writeValue(bufView);
-
+                        
+                        setTimeout(function() {
+                            window.close();
+                        }, 200);
+                        
                       })
                     .catch(error => { alert(error); });
                 } else {
