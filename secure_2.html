@@ -46,14 +46,12 @@
               .then(server => server.getPrimaryService('7bab0100-55d4-48e6-a6c8-b0edfeb42b05'))
               .then(service => service.getCharacteristic('7bab0101-55d4-48e6-a6c8-b0edfeb42b05'))
               .then(porte => {
-                // Writing 1 is the signal to reset energy expended.
-                str = document.getElementById("password").value;
                 var buf = new ArrayBuffer(value.length); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0, strLen=value.length; i<strLen; i++) {
                     bufView[i] = value[i];
                 }
-				return porte.writeValue(key);
+				return porte.writeValue(bufView);
               })
               .then(error => {
                 setTimeout(function() {
