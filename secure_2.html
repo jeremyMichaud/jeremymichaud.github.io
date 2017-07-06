@@ -31,8 +31,6 @@
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
             function onButtonClick() {
                 alert("aes_doneb");
-
-                AES_Done();
               navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}] })
               .then(device => {
                 // Human-readable name of the device.
@@ -44,6 +42,7 @@
               .then(server => server.getPrimaryService('7bab0100-55d4-48e6-a6c8-b0edfeb42b05'))
               .then(service => service.getCharacteristic('7bab0101-55d4-48e6-a6c8-b0edfeb42b05'))
               .then(porte => {
+              alert("aes_donec");
                 var buf = new ArrayBuffer(16); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0; i<16; i++) {
