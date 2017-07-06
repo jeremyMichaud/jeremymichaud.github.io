@@ -28,14 +28,15 @@
             function onButtonClick() {
                 var key = [ 0x92, 0x77, 0x14, 0xAB, 0x73, 0x8C, 0xB1, 0xD4, 0x75,
                     0x08, 0x84, 0x6F, 0x30, 0x4F, 0xDE, 0xB1 ];
+                alert("aes_donei");
                 AES_Init();
+                alert("aes_done");
                 var value = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
                 AES_ExpandKey(key);
                 AES_Decrypt(value, key);
 
                 AES_Done();
-                alert("aes_done");
               navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}] })
               .then(device => {
                 // Human-readable name of the device.
