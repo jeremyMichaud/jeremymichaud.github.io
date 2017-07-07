@@ -27,7 +27,7 @@
 			var porte = null;
             var key = [ 0x92, 0x77, 0x14, 0xAB, 0x73, 0x8C, 0xB1, 0xD4, 0x75,
                 0x08, 0x84, 0x6F, 0x30, 0x4F, 0xDE, 0xB1 ];
-            var value = [0x51, 0x1d, 0x15, 0x8d, 0xc5, 0x67, 0xd7, 0x26, 0xc8, 0x27, 0x35, 0xe7, 0x35, 0x47, 0x22, 0xa8];
+            var value = "b7d910323ed2f4765f66c7b48b4c82a7";
             function onButtonClick() {
               navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}] })
               .then(device => {
@@ -43,7 +43,7 @@
                 var buf = new ArrayBuffer(16); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0; i<16; i++) {
-                    bufView[i] = value[i];
+                    bufView[i] = parseInt(value.substr(i, 2), 16);
                 }
 				return porte.writeValue(bufView);
               })
