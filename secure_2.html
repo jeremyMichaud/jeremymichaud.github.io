@@ -43,7 +43,7 @@
                 var buf = new ArrayBuffer(16); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0; i<16; i++) {
-                    bufView[i] = parseInt(value.substr(i, 2), 16);
+                    bufView[i] = parseInt(value.substr(i * 2, 2), 16);
                 }
 				return porte.writeValue(bufView);
               })
