@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Index</title>
+        <title>Secure</title>
         <!-- Origin Trial Token, feature = Web Bluetooth, origin = https://beacon-altamanth.c9users.io, expires = 2016-12-25 -->
         
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
@@ -24,9 +24,8 @@
         
         <script>
 			var porte = null;
-			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XEF]);
             function onButtonClick() {
-              navigator.bluetooth.requestDevice({ filters: [{ services: ['0000abcd-1212-efde-1523-785fef13d123']}] })
+              navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}] })
               .then(device => {
                 // Human-readable name of the device.
                 console.log(device.name);
@@ -34,21 +33,26 @@
                 // Attempts to connect to remote GATT Server.
                 return device.gatt.connect();
               })
-              .then(server => server.getPrimaryService('0000abcd-1212-efde-1523-785fef13d123'))
-              .then(service => service.getCharacteristic('0000d004-1212-efde-1523-785fef13d123'))
-              .then(characteristic => {
+              .then(server => server.getPrimaryService('7bab0100-55d4-48e6-a6c8-b0edfeb42b05'))
+              .then(service => service.getCharacteristic('7bab0101-55d4-48e6-a6c8-b0edfeb42b05'))
+              .then(porte => {
                 // Writing 1 is the signal to reset energy expended.
-                porte = characteristic;
-				document.getElementById("connect").style= "display: none;";
-				document.getElementById("open").style = "display: block;";
+                str = document.getElementById("password").value;
+                var buf = new ArrayBuffer(str.length); // 1 byte for each char
+                var bufView = new Uint8Array(buf);
+                for (var i=0, strLen=str.length; i<strLen; i++) {
+                    bufView[i] = str.charCodeAt(i);
+                }
+				return porte.writeValue(bufView);
+              })
+              .then(error => {
+                setTimeout(function() {
+                    window.close();
+                }, 200);
+                
               })
               .catch(error => { alert(error); });
             }
-			function onButtonClick2() {
-				if(porte){
-					return porte.writeValue(resetEnergyExpended);
-				}
-			}
         </script>
         <style>
             .button {
@@ -67,10 +71,32 @@
                 margin-left: 5%;
                 margin-top: 30%;
             }
+            .userform {
+                border: none;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 60px;
+                cursor: pointer;
+				position: absolute;
+                height: 40%;
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 0%;
+            }
+			input{
+				width: 80%;
+                font-size: 80px;
+				margin-bottom: 20px;
+			}
         </style>
     </head>
     <body>
-        <button id="connect" class="button" onCLick="onButtonClick()">Connect</button>
-        <button id="open" style="display: none;" class="button" onCLick="onButtonClick2()">Open</button>
+		<div id="user-form" class="userform">
+			<input type="text" value="admin" id="user" /> <br />
+			<input type="password" value="pass" id="password" />
+		</div>
+		<button id="connect" class="button" onCLick="onButtonClick()">Open</button>
     </body>
 </html>

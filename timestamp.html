@@ -25,7 +25,8 @@
         <script>
 			var timestamp_service = null;
             var message = "Login";
-			var resetEnergyExpended = new Uint8Array([0xDE, 0XAD, 0XBE, 0XE3]);
+            var password = [ 0x92, 0x77, 0x14, 0xAB, 0x73, 0x8C, 0xB1, 0xD4, 0x75,
+                0x08, 0x84, 0x6F, 0x30, 0x4F, 0xDE, 0xB1 ];
             function onButtonClick() {
               navigator.bluetooth.requestDevice({ filters: [{ services: ['7bab0100-55d4-48e6-a6c8-b0edfeb42b05']}], optionalServices: ['7bab0200-55d4-48e6-a6c8-b0edfeb42b05'] })
               .then(device => {
@@ -48,8 +49,8 @@
                 str = document.getElementById("oldpassword").value;
                 var buf = new ArrayBuffer(str.length); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
-                for (var i=0, strLen=str.length; i<strLen; i++) {
-                    bufView[i] = str.charCodeAt(i);
+                for (var i=0; i<password.lenght; i++) {
+                    bufView[i] = password[i];
                 }
                 characteristic.writeValue(bufView);
 
