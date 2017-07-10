@@ -46,8 +46,7 @@
                 // Writing 1 is the signal to reset energy expended.
                 characteristic.addEventListener('characteristicvaluechanged',
                                                 handleCharacteristicValueChanged);
-                str = document.getElementById("oldpassword").value;
-                var buf = new ArrayBuffer(str.length); // 1 byte for each char
+                var buf = new ArrayBuffer(password.length); // 1 byte for each char
                 var bufView = new Uint8Array(buf);
                 for (var i=0; i<password.lenght; i++) {
                     bufView[i] = password[i];
